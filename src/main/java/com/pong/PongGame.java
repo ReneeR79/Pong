@@ -77,8 +77,8 @@ public class PongGame extends JPanel implements MouseMotionListener {
         g.setColor(Color.WHITE);
         g.drawString("The Score is User:" + playerScore + " vs Ai:" + aiScore, 240, 20);
         ball.draw(g);
-        aiPaddle.draw(g);
         pPaddle.draw(g);
+        aiPaddle.draw(g);
        
         //call the "draw" function of any visual component you'd like to show up on the screen.
         slow.draw(g);
@@ -104,16 +104,22 @@ public class PongGame extends JPanel implements MouseMotionListener {
        
         aiPaddle.moveY(ball.getY());
 
-        if (speed.isTouching(ball)){
+        if (speed.isTouching(ball) && ball.getChangeX() > 0){
             ball.setChangeX(ball.getChangeX() + 3);
         }
-        if (slow.isTouching(ball)){
+        else{
             ball.setChangeX(ball.getChangeX() - 3);
+        }
+        if (slow.isTouching(ball) && ball.getChangeX() > 0){
+            ball.setChangeX(ball.getChangeX() - 3);
+        }
+        else{
+            ball.setChangeX(ball.getChangeX() + 3);
         }
 
 
         if (aiPaddle.isTouching(ball)) {
-           ball.reverseX();
+            ball.reverseX();
         }
         if (pPaddle.isTouching(ball)){
             ball.reverseX();
@@ -138,11 +144,13 @@ public class PongGame extends JPanel implements MouseMotionListener {
     public void pointScored() {
         if(ball.getX() <= 0){
             aiScore++;
-            ball.setX(200);
+            ball.setX(320);
+            ball.setChangeX(5);
         }
         if(ball.getX() >= 640){
             playerScore++;
-            ball.setX(200);
+            ball.setX(320);
+            ball.setChangeX(5);
         }
     }
 
